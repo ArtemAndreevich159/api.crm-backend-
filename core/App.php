@@ -58,6 +58,7 @@ class App extends Component
      * todo Реализовать в компоненте Request
      * @param null $default
      * @return null|string
+     * @deprecated
      */
     protected function getURI($default = null) {
         if (!empty($_SERVER['REQUEST_URI'])) {
@@ -71,7 +72,7 @@ class App extends Component
      * @throws \Exception
      */
     protected function proccessRequest() {
-        $uri = $this->getURI();
+        $uri = $this->request->getURI();
 
         if (!$uri) {
             throw new \Exception('Bad request');

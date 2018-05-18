@@ -3,6 +3,7 @@
 namespace core;
 
 /**
+ * @property    \components\Request     $request
  * Class Component
  * @package core
  */
