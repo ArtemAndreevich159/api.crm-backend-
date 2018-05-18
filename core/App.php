@@ -14,12 +14,10 @@ define('PHP_EXT', '.php');
  * Class App
  * @package core
  */
-class App
+class App extends Component
 {
     /** @var  App */
     protected static $_instance = null;
-    /** @var array  */
-    protected static $_config = [];
 
     /**
      * @return App
