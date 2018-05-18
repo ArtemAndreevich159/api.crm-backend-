@@ -38,6 +38,11 @@ class App
     private function __construct() {
     }
 
+    /**
+     * Точка входа в приложение
+     * @param $config
+     * @throws \Exception
+     */
     public function run($config) {
         $fileNmeConfig = CONFIG_DIR . $config . PHP_EXT;
 
@@ -46,5 +51,19 @@ class App
         }
 
         self::$_config = include ($fileNmeConfig);
+    }
+
+    /**
+     * Получает URI
+     * todo Реализовать в компоненте Request
+     * @param null $default
+     * @return null|string
+     */
+    protected function getURI($default = null) {
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            return trim($_SERVER['REQUEST_URI'], '/');
+        }
+
+        return $default;
     }
 }
