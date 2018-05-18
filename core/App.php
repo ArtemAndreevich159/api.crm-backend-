@@ -5,7 +5,7 @@ namespace core;
 define('DS', DIRECTORY_SEPARATOR);
 define('COMPONENTS_DIR', ROOT . '/components/');
 define('CORE_DIR', ROOT . '/core/');
-define('METHODS_DIR', ROOT . '/methods/');
+define('CONTROLLERS_DIR', ROOT . '/controllers/');
 define('MODELS_DIR', ROOT . '/models/');
 define('CONFIG_DIR', CORE_DIR . 'config/');
 define('PHP_EXT', '.php');
@@ -51,6 +51,8 @@ class App
         }
 
         self::$_config = include ($fileNmeConfig);
+
+        $this->proccessRequest();
     }
 
     /**
@@ -65,5 +67,46 @@ class App
         }
 
         return $default;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function proccessRequest() {
+        $uri = $this->getURI();
+
+        if (!$uri) {
+            throw new \Exception('Bad request');
+        }
+
+        $routes = explode('/', $uri);
+        $method = array_shift($routes);
+
+        $methodArr = explode('.', $method);
+
+        if (2 !== count($methodArr)) {
+            throw new \Exception('Wrong method');
+        }
+
+        $controllerName = array_shift($methodArr);
+        $actionName = array_shift($methodArr);
+
+        $controllerClassName = 'controllers\\' . ucfirst($controllerName) . 'Controller';
+        $action = 'action' . ucfirst($actionName);
+
+        if (!class_exists($controllerClassName)) {
+            throw new \Exception('Unknown method');
+        }
+
+        $controllerObj = new $controllerClassName;
+
+        if (!method_exists($controllerObj, $action)) {
+            throw new \Exception('Unknown method');
+        }
+
+        $result = call_user_func_array([$controllerObj, $action], $routes);
+        $resultJSON = json_encode($result);
+
+        echo $resultJSON;
     }
 }
