@@ -4,6 +4,10 @@ namespace components;
 
 use core\Component;
 
+/**
+ * Class Db
+ * @package components
+ */
 class Db extends Component
 {
     /** @var  \PDO */
