@@ -1,3 +1,10 @@
 <?php
 
-return [];
+return [
+    'db' => [
+        'host' => 'localhost',
+        'dbname' => '',
+        'user' => 'root',
+        'password' => ''
+    ],
+];

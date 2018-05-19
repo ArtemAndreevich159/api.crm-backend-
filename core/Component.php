@@ -4,6 +4,8 @@ namespace core;
 
 /**
  * @property    \components\Request     $request
+ * @property    \components\Config      $config
+ * @property    \components\Db          $db
  * Class Component
  * @package core
  */
