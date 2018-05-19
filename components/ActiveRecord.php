@@ -55,15 +55,30 @@ class ActiveRecord extends Db
      * @return bool|null|string
      */
     public function save() {
+        $this->beforeSave();
         if ($this->isNew) {
-            return $this->insert($this->tableName, $this->fieldsValue);
+            $res = $this->insert($this->tableName, $this->fieldsValue);
         } else {
-            return $this->update(
+            $res = $this->update(
                 $this->tableName,
                 $this->fieldsValue,
                 "{$this->pk['field']} = {$this->pk['value']}"
             );
         }
+
+        if ($res) {
+            $this->afterSave();
+        }
+
+        return $res;
+    }
+
+    public function beforeSave() {
+
+    }
+
+    public function afterSave() {
+
     }
 
     /**
@@ -160,6 +175,21 @@ class ActiveRecord extends Db
             return false;
         }
 
-        $this->deleted($this->tableName, [$this->pk => $this->fieldsValue[$this->pk]]);
+        $this->beforeDelete();
+        $res = $this->deleted($this->tableName, [$this->pk => $this->fieldsValue[$this->pk]]);
+
+        if ($res) {
+            $this->afterDelete();
+        }
+
+        return $res;
+    }
+
+    public function beforeDelete() {
+
+    }
+
+    public function afterDelete() {
+
     }
 }
